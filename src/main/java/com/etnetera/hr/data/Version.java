@@ -11,51 +11,50 @@ import javax.validation.constraints.Size;
 
 /**
  * @author Etnetera
- *
  */
 @Entity
 public class Version {
 
-	@EmbeddedId
-	private VersionId id;
+    @EmbeddedId
+    private VersionId id;
 
-	@NotNull
-	@Size(min = 5, message = "Codename must have at least 10 characters")
-	private String codeName;
+    @NotNull
+    @Size(min = 5, message = "Codename must have at least 10 characters")
+    private String codeName;
 
-	@JsonBackReference
-	@ManyToOne
-	@JoinColumn(name = "framework_id")
-	private JavaScriptFramework framework;
+    @JsonBackReference
+    @ManyToOne
+    @JoinColumn(name = "framework_id")
+    private JavaScriptFramework framework;
 
-	public Version() {
-	}
+    public Version() {
+    }
 
-	public Version(VersionId id) {
-		this.id = id;
-	}
+    public Version(VersionId id) {
+        this.id = id;
+    }
 
-	public VersionId getId() {
-		return id;
-	}
+    public VersionId getId() {
+        return id;
+    }
 
-	public void setId(VersionId id) {
-		this.id = id;
-	}
+    public void setId(VersionId id) {
+        this.id = id;
+    }
 
-	public String getCodeName() {
-		return codeName;
-	}
+    public String getCodeName() {
+        return codeName;
+    }
 
-	public void setCodeName(String codeName) {
-		this.codeName = codeName;
-	}
+    public void setCodeName(String codeName) {
+        this.codeName = codeName;
+    }
 
-	public JavaScriptFramework getFramework() {
-		return framework;
-	}
+    public JavaScriptFramework getFramework() {
+        return framework;
+    }
 
-	public void setFramework(JavaScriptFramework framework) {
-		this.framework = framework;
-	}
+    public void setFramework(JavaScriptFramework framework) {
+        this.framework = framework;
+    }
 }

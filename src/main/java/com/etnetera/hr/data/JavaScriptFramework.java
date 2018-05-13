@@ -10,16 +10,15 @@ import java.util.List;
 
 /**
  * Simple data entity describing basic properties of every JavaScript framework.
- * 
- * @author Etnetera
  *
+ * @author Etnetera
  */
 @Entity
 public class JavaScriptFramework {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
 
     @NotNull
     @Size(min = 10, message = "Framework name must have at least 10 characters")
@@ -30,35 +29,35 @@ public class JavaScriptFramework {
     @Valid
     private List<Version> versions;
 
-	public JavaScriptFramework() {
-	}
+    public JavaScriptFramework() {
+    }
 
-	public JavaScriptFramework(String name) {
-		this.name = name;
-	}
+    public JavaScriptFramework(String name) {
+        this.name = name;
+    }
 
-	public Long getId() {
-		return id;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public List<Version> getVersions() {
-		return versions;
-	}
+        return versions;
+    }
 
     public void setVersions(List<Version> versions) {
-		this.versions = versions;
-	}
-	
+        this.versions = versions;
+    }
+
 }
