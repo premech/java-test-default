@@ -26,52 +26,56 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 /**
  * Class used for Spring Boot/MVC based tests.
- * 
- * @author Etnetera
  *
+ * @author Etnetera
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
 public class JavaScriptFrameworkTests {
 
-	@Autowired
-	private MockMvc mockMvc;
+    @Autowired
+    private MockMvc mockMvc;
 
-	@Autowired
-	private JavaScriptFrameworkRepository frameworkRepository;
+    @Autowired
+    private JavaScriptFrameworkRepository frameworkRepository;
 
-	@Autowired
-	private JavaScriptFrameworkVersionRepository versionRepository;
+    @Autowired
+    private JavaScriptFrameworkVersionRepository versionRepository;
 
     //@Before
-	public void initializeData() throws Exception {
+    public void initializeData() throws Exception {
         // Version v1 = new Version(new VersionId(1, 0, 1), "Release notes example 1");
         // Version v2 = new Version(new VersionId(1, 0, 2), "Release notes example 2");
-		// versionRepository.save(v1);
-		// versionRepository.save(v2);
-		//
+        // versionRepository.save(v1);
+        // versionRepository.save(v2);
+        //
         // List<Version> versions = new ArrayList<>();
-		// versions.add(v1);
-		// versions.add(v2);
-		//
-		// JavaScriptFramework jsf = new JavaScriptFramework("ReactJS");
-		// jsf.setVersions(versions);
-		// frameworkRepository.save(jsf);
-	}
+        // versions.add(v1);
+        // versions.add(v2);
+        //
+        // JavaScriptFramework jsf = new JavaScriptFramework("ReactJS");
+        // jsf.setVersions(versions);
+        // frameworkRepository.save(jsf);
+    }
 
-	// @Test
-	public void findAllTest() throws Exception {
-		mockMvc.perform(get("/findAll")).andExpect(status().isOk()).andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-				.andExpect(jsonPath("$", hasSize(1))).andExpect(jsonPath("$[0].id", is(1))).andExpect(jsonPath("$[0].name", is("ReactJS")))
-				.andExpect(jsonPath("$[0].versions", hasSize(2))).andExpect(jsonPath("$[0].versions[0].id.major", is(1)))
-				.andExpect(jsonPath("$[0].versions[0].id.minor", is(0))).andExpect(jsonPath("$[0].versions[0].id.bugfix", is(1)))
-				.andExpect(jsonPath("$[0].versions[1].id.major", is(1))).andExpect(jsonPath("$[0].versions[1].id.minor", is(0)))
-				.andExpect(jsonPath("$[0].versions[1].id.bugfix", is(2)));
-	}
+    // @Test
+    public void findAllTest() throws Exception {
+        mockMvc.perform(get("/findAll")).andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(jsonPath("$", hasSize(1))).andExpect(jsonPath("$[0].id", is(1)))
+                .andExpect(jsonPath("$[0].name", is("ReactJS")))
+                .andExpect(jsonPath("$[0].versions", hasSize(2)))
+                .andExpect(jsonPath("$[0].versions[0].id.major", is(1)))
+                .andExpect(jsonPath("$[0].versions[0].id.minor", is(0)))
+                .andExpect(jsonPath("$[0].versions[0].id.bugfix", is(1)))
+                .andExpect(jsonPath("$[0].versions[1].id.major", is(1)))
+                .andExpect(jsonPath("$[0].versions[1].id.minor", is(0)))
+                .andExpect(jsonPath("$[0].versions[1].id.bugfix", is(2)));
+    }
 
-	@Test
-	public void createTest() throws Exception {
+    @Test
+    public void createTest() throws Exception {
         JavaScriptFramework jsf = new JavaScriptFramework("ReactJSxxxxxxx");
 
         Version v1 = new Version(new VersionId(1, 0, 1));
@@ -81,14 +85,14 @@ public class JavaScriptFrameworkTests {
         v2.setFramework(jsf);
         v2.setCodeName("crap");
         List<Version> versions = new ArrayList<>();
-		versions.add(v1);
-		versions.add(v2);
-		jsf.setVersions(versions);
+        versions.add(v1);
+        versions.add(v2);
+        jsf.setVersions(versions);
 
         String json = new ObjectMapper().writeValueAsString(jsf);
 
         mockMvc.perform(post("/create").contentType(MediaType.APPLICATION_JSON).content(json))
                 .andExpect(status().isCreated());
-	}
+    }
 
 }
