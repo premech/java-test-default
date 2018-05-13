@@ -1,12 +1,12 @@
 package com.etnetera.hr.data;
 
-import java.util.List;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.util.List;
 
 /**
  * Simple data entity describing basic properties of every JavaScript framework.
@@ -21,10 +21,14 @@ public class JavaScriptFramework {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
-	private String name;
+    @NotNull
+    @Size(min = 10, message = "Framework name must have at least 10 characters")
+    private String name;
 
-	@OneToMany
-	private List<JavaScriptFrameworkVersion> versions;
+    @JsonManagedReference
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "framework")
+    @Valid
+    private List<Version> versions;
 
 	public JavaScriptFramework() {
 	}
@@ -49,11 +53,11 @@ public class JavaScriptFramework {
 		this.name = name;
 	}
 
-	public List<JavaScriptFrameworkVersion> getVersions() {
+    public List<Version> getVersions() {
 		return versions;
 	}
 
-	public void setVersions(List<JavaScriptFrameworkVersion> versions) {
+    public void setVersions(List<Version> versions) {
 		this.versions = versions;
 	}
 	

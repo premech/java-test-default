@@ -1,9 +1,7 @@
 package com.etnetera.hr.repository;
 
+import com.etnetera.hr.data.Version;
 import org.springframework.data.repository.CrudRepository;
-
-import com.etnetera.hr.data.JavaScriptFrameworkVersion;
-import com.etnetera.hr.data.VersionId;
 
 /**
  * Spring data repository interface used for accessing the data in database.
@@ -11,6 +9,6 @@ import com.etnetera.hr.data.VersionId;
  * @author Etnetera
  *
  */
-public interface JavaScriptFrameworkVersionRepository extends CrudRepository<JavaScriptFrameworkVersion, VersionId> {
+public interface JavaScriptFrameworkVersionRepository extends CrudRepository<Version, Long> {
 
 }

@@ -1,17 +1,11 @@
 package com.etnetera.hr;
 
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import org.junit.Before;
+import com.etnetera.hr.data.JavaScriptFramework;
+import com.etnetera.hr.data.Version;
+import com.etnetera.hr.data.VersionId;
+import com.etnetera.hr.repository.JavaScriptFrameworkRepository;
+import com.etnetera.hr.repository.JavaScriptFrameworkVersionRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,11 +15,14 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.etnetera.hr.data.JavaScriptFramework;
-import com.etnetera.hr.data.JavaScriptFrameworkVersion;
-import com.etnetera.hr.data.VersionId;
-import com.etnetera.hr.repository.JavaScriptFrameworkRepository;
-import com.etnetera.hr.repository.JavaScriptFrameworkVersionRepository;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
  * Class used for Spring Boot/MVC based tests.
@@ -47,14 +44,14 @@ public class JavaScriptFrameworkTests {
 	@Autowired
 	private JavaScriptFrameworkVersionRepository versionRepository;
 
-	@Before
+    //@Before
 	public void initializeData() throws Exception {
-		// JavaScriptFrameworkVersion v1 = new JavaScriptFrameworkVersion(new VersionId(1, 0, 1), "Release notes example 1");
-		// JavaScriptFrameworkVersion v2 = new JavaScriptFrameworkVersion(new VersionId(1, 0, 2), "Release notes example 2");
+        // Version v1 = new Version(new VersionId(1, 0, 1), "Release notes example 1");
+        // Version v2 = new Version(new VersionId(1, 0, 2), "Release notes example 2");
 		// versionRepository.save(v1);
 		// versionRepository.save(v2);
 		//
-		// List<JavaScriptFrameworkVersion> versions = new ArrayList<>();
+        // List<Version> versions = new ArrayList<>();
 		// versions.add(v1);
 		// versions.add(v2);
 		//
@@ -75,15 +72,23 @@ public class JavaScriptFrameworkTests {
 
 	@Test
 	public void createTest() throws Exception {
-		JavaScriptFrameworkVersion v1 = new JavaScriptFrameworkVersion(new VersionId(1, 0, 1), "Release notes example 1");
-		JavaScriptFrameworkVersion v2 = new JavaScriptFrameworkVersion(new VersionId(1, 0, 2), "Release notes example 2");
-		List<JavaScriptFrameworkVersion> versions = new ArrayList<>();
+        JavaScriptFramework jsf = new JavaScriptFramework("ReactJSxxxxxxx");
+
+        Version v1 = new Version(new VersionId(1, 0, 1));
+        v1.setFramework(jsf);
+        v1.setCodeName("shit");
+        Version v2 = new Version(new VersionId(1, 0, 2));
+        v2.setFramework(jsf);
+        v2.setCodeName("crap");
+        List<Version> versions = new ArrayList<>();
 		versions.add(v1);
 		versions.add(v2);
-		JavaScriptFramework jsf = new JavaScriptFramework("ReactJS2");
 		jsf.setVersions(versions);
 
-		mockMvc.perform(post("/create", jsf).content(jsf.toString())).andExpect(status().isOk());
+        String json = new ObjectMapper().writeValueAsString(jsf);
+
+        mockMvc.perform(post("/create").contentType(MediaType.APPLICATION_JSON).content(json))
+                .andExpect(status().isCreated());
 	}
 
 }
